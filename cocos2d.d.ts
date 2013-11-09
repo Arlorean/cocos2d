@@ -441,7 +441,7 @@ declare module cc {
          * //load multi lists of resources
          * cc.Loader.preload([g_mainmenu,g_level], this.startGame, this);
          */
-        preload(resources: string[], selector, target: {}): Loader;
+        static preload(resources: any[], selector: () => void, target: Node): Loader;
     }
 
     /**
@@ -480,7 +480,7 @@ declare module cc {
          * //load multi lists of resources
          * cc.LoaderScene.preload([g_mainmenu,g_level], this.startGame, this);
          */
-        static preload(resources: any[], selector, target): LoaderScene;
+        static preload(resources: any[], selector: () => void, target: Node): LoaderScene;
     }
     //#endregion cocos2d/CCLoader.js
 
@@ -1258,13 +1258,13 @@ declare module cc {
          * isVisible getter
          * @return {Boolean}
          */
-        isVisible(): bool;
+        isVisible(): boolean;
 
         /**
          * isVisible setter
          * @param {Boolean} Var
          */
-        setVisible(Var: bool);
+        setVisible(Var: boolean);
 
         /**
          *  <p>anchorPoint is the point around which all transformations and positioning manipulations take place.<br/>
@@ -1304,7 +1304,7 @@ declare module cc {
          * whether or not the node is running
          * @return {Boolean}
          */
-        isRunning(): bool;
+        isRunning(): boolean;
 
         /** A weak reference to the parent
          * @return {cc.Node}
@@ -1321,13 +1321,13 @@ declare module cc {
          * Used by CCLayer and CCScene
          * @return {Boolean}
          */
-        isIgnoreAnchorPointForPosition(): bool;
+        isIgnoreAnchorPointForPosition(): boolean;
 
         /**
          * ignoreAnchorPointForPosition setter
          * @param {Boolean} newValue
          */
-        ignoreAnchorPointForPosition(newValue: bool);
+        ignoreAnchorPointForPosition(newValue: boolean);
 
         /**
          * A tag used to identify the node easily
@@ -1489,7 +1489,7 @@ declare module cc {
          * If the cleanup parameter is not passed, it will force a cleanup. <br/>
          * @param {Boolean | null } cleanup
          */
-        removeAllChildren(cleanup: bool);
+        removeAllChildren(cleanup: boolean);
 
         /** Reorders a child according to a new z value. <br/>
          * The child MUST be already added.
@@ -1621,20 +1621,20 @@ declare module cc {
          * @param {function} callback_fn
          * @param {Number} interval
          */
-        schedule(callback_fn: (dt: number) => void, interval?: number, repeat?: boolean, delay?: number);
+        schedule(callback_fn: (dt: number) => void , interval?: number, repeat?: boolean, delay?: number);
 
         /**
          * Schedules a callback function that runs only once, with a delay of 0 or larger
          * @param {cc.Class} callback_fn
          * @param {Number} delay
          */
-        scheduleOnce(callback_fn: (dt: number) => void, delay: number);
+        scheduleOnce(callback_fn: (dt: number) => void , delay: number);
 
         /**
          * unschedules a custom callback function.
          * @param {function} callback_fn
          */
-        unschedule(callback_fn: (dt: number) => void);
+        unschedule(callback_fn: (dt: number) => void );
 
         /**
          * unschedule all scheduled callback functions: custom callback functions, and the 'update' callback function.<br/>
@@ -1871,6 +1871,14 @@ declare module cc {
     }
 
     /**
+     * @function
+     * @param {Number} w width
+     * @param {Number} h height
+     * @return {cc.Size}
+     */
+    function size(w: number, h: number);
+
+    /**
      * @class
      * @param {Number} x1
      * @param {Number} y1
@@ -1882,8 +1890,136 @@ declare module cc {
         origin: Point;
         size: Size;
 
+        width: number;
+
         constructor(x1: number, y1: number, width1: number, height1: number);
     }
+
+    /**
+     * @function
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} width
+     * @param {Number} height
+     * @return {cc.Rect}
+     */
+    function RectMake(x: number, y: number, width: number, height: number): Rect;
+
+    // backward compatible
+    function rect(x: number, y: number, w: number, h: number): Rect;
+
+    /**
+     * The "zero" rectangle -- equivalent to cc.rect(0, 0, 0, 0).
+     * @function
+     * @return {cc.Rect}
+     */
+    function RectZero(): Rect;
+
+    /**
+     * @function
+     * @param {cc.Rect} rect1
+     * @param {cc.Rect} rect2
+     * @return {Boolean}
+     */
+    function rectEqualToRect(rect1: Rect, rect2: Rect): boolean;
+
+    /**
+     * @function
+     * @param {cc.Rect} rect1
+     * @param {cc.Rect} rect2
+     * @return {Boolean}
+     */
+    function rectContainsRect(rect1: Rect, rect2: Rect): boolean;
+
+    /**
+     * return the rightmost x-value of 'rect'
+     * @function
+     * @param {cc.Rect} rect
+     * @return {Number}
+     */
+    function rectGetMaxX(rect: Rect): number;
+
+    /**
+     * return the midpoint x-value of 'rect'
+     * @function
+     * @param {cc.Rect} rect
+     * @return {Number}
+     */
+    function rectGetMidX(rect: Rect);
+
+    /**
+     * return the leftmost x-value of 'rect'
+     * @function
+     * @param {cc.Rect} rect
+     * @return {Number}
+     */
+    function rectGetMinX(rect: Rect);
+
+    /**
+     * Return the topmost y-value of `rect'
+     * @function
+     * @param {cc.Rect} rect
+     * @return {Number}
+     */
+    function rectGetMaxY(rect: Rect): number;
+
+    /**
+     * Return the midpoint y-value of `rect'
+     * @function
+     * @param {cc.Rect} rect
+     * @return {Number}
+     */
+    function rectGetMidY(rect: Rect): number;
+
+    /**
+     * Return the bottommost y-value of `rect'
+     * @function
+     * @param {cc.Rect} rect
+     * @return {Number}
+     */
+    function rectGetMinY(rect): number;
+
+    /**
+     * @function
+     * @param {cc.Rect} rect
+     * @param {cc.Point} point
+     * @return {Boolean}
+     */
+    function rectContainsPoint(rect: Rect, point: Point);
+
+    /**
+     * @function
+     * @param {cc.Rect} rectA
+     * @param {cc.Rect} rectB
+     * @return {Boolean}
+     */
+    function rectIntersectsRect(rectA: Rect, rectB: Rect): boolean;
+
+    /**
+     * @function
+     * @param {cc.Rect} rectA
+     * @param {cc.Rect} rectB
+     * @return {Boolean}
+     */
+    function rectOverlapsRect(rectA: Rect, rectB: Rect): boolean;
+
+    /**
+     * Returns the smallest rectangle that contains the two source rectangles.
+     * @function
+     * @param {cc.Rect} rectA
+     * @param {cc.Rect} rectB
+     * @return {cc.Rect}
+     */
+    function rectUnion(rectA: Rect, rectB: Rect): Rect;
+
+    /**
+     * Returns the overlapping portion of 2 rectangles
+     * @function
+     * @param {cc.Rect} rectA
+     * @param {cc.Rect} rectB
+     * @return {cc.Rect}
+     */
+    function rectIntersection(rectA: Rect, rectB: Rect): Rect;
     //#endregion cocos2d/cocoa/CCGeometry.js
 
     //#region cocos2d/label_nodes/CCLabelTTF.js
@@ -1926,7 +2062,21 @@ declare module cc {
      * @extends cc.Node
      */
     export class Scene extends Node {
+        /**
+         * Constructor
+         */
+        constructor();
 
+        /**
+         * creates a scene
+         * @return {cc.Scene}
+         * @example
+         * // Example
+         * var aScene = cc.Scene.create();
+         * //OR
+         * var aScene = new cc.Scene();
+         */
+        static create(t?: number, scene?: Scene): Scene;
     }
     //#endregion cocos2d/layers_scenes_transitions_nodes/CCScene.js
 
@@ -1943,7 +2093,7 @@ declare module cc {
          *
          * @return {Boolean}
          */
-        init(): boolean;
+        init(...args: any[]): boolean;
 
         isMouseEnabled(): boolean;
 
@@ -2252,9 +2402,345 @@ declare module cc {
      * var yellowBox = cc.LayerColorCanvas.create(cc.c3b(255,255,0,255), 200, 200);
      */
     export class LayerColor extends Layer {
+        /**
+         * @param {cc.Color4B} color
+         * @param {Number} width
+         * @param {Number} height
+         * @return {Boolean}
+         */
+        init(...args: any[]/*color: Color4B, width: number, height: number*/): boolean;
+
         static create(color?: Color4B, width?: number, height?: number): LayerColor;
     }
+
+    /**
+     * <p>
+     * CCLayerGradient is a subclass of cc.LayerColor that draws gradients across the background.<br/>
+     *<br/>
+     * All features from cc.LayerColor are valid, plus the following new features:<br/>
+     * <ul><li>direction</li>
+     * <li>final color</li>
+     * <li>interpolation mode</li></ul>
+     * <br/>
+     * Color is interpolated between the startColor and endColor along the given<br/>
+     * vector (starting at the origin, ending at the terminus).  If no vector is<br/>
+     * supplied, it defaults to (0, -1) -- a fade from top to bottom.<br/>
+     * <br/>
+     * If 'compressedInterpolation' is disabled, you will not see either the start or end color for<br/>
+     * non-cardinal vectors; a smooth gradient implying both end points will be still<br/>
+     * be drawn, however.<br/>
+     *<br/>
+     * If 'compressedInterpolation' is enabled (default mode) you will see both the start and end colors of the gradient.
+     * </p>
+     * @class
+     * @extends cc.LayerColor
+     */
+    export class LayerGradient extends LayerColor {
+        /**
+         * get the starting color
+         * @return {cc.Color3B}
+         */
+        getStartColor(): Color3B;
+
+        /**
+         * set the starting color
+         * @param {cc.Color3B} color
+         * @example
+         * // Example
+         * myGradientLayer.setStartColor(cc.c3b(255,0,0));
+         * //set the starting gradient to red
+         */
+        setStartColor(color: Color3B);
+
+        /**
+         * set the end gradient color
+         * @param {cc.Color3B} color
+         * @example
+         * // Example
+         * myGradientLayer.setEndColor(cc.c3b(255,0,0));
+         * //set the ending gradient to red
+         */
+        setEndColor(color: Color3B);
+
+        /**
+         * get the end color
+         * @return {cc.Color3B}
+         */
+        getEndColor(): Color3B;
+
+        /**
+         * set starting gradient opacity
+         * @param {Number} o from 0 to 255, 0 is transparent
+         */
+        setStartOpacity(o: number);
+
+        /**
+         * get the starting gradient opacity
+         * @return {Number}
+         */
+        getStartOpacity(): number;
+
+        /**
+         * set the end gradient opacity
+         * @param {Number} o
+         */
+        setEndOpacity(o: number);
+
+        /**
+         * get the end gradient opacity
+         * @return {Number}
+         */
+        getEndOpacity(): number;
+
+        /**
+         * set vector
+         * @param {cc.Point} Var
+         */
+        setVector(Var: Point);
+
+        /**
+         * @return {cc.Point}
+         */
+        getVector(): Point;
+
+        /** is Compressed Interpolation
+         * @return {Boolean}
+         */
+        isCompressedInterpolation(): boolean;
+
+        /**
+         * @param {Boolean} compress
+         */
+        setCompressedInterpolation(compress: boolean);
+
+        /**
+         * @param {cc.Color4B} start starting color
+         * @param {cc.Color4B} end
+         * @param {cc.Point|Null} v
+         * @return {Boolean}
+         */
+        init(start: Color4B, end: Color4B, v?: Point): boolean;
+    }
     //#endregion cocos2d/layers_scenes_transitions_nodes/CCLayer.js
+
+    //#region cocos2d/layers_scenes_transitions_nodes/Transition.js
+    /**
+     * A tag constant for identifying fade scenes
+     * @constant
+     * @type Number
+     */
+    var SCENE_FADE: number;
+
+    /**
+     * cc.TransitionEaseScene can ease the actions of the scene protocol.
+     * @class
+     * @extends cc.Class
+     */
+    export class TransitionEaseScene extends Class {
+        /**
+         * returns the Ease action that will be performed on a linear action.
+         */
+        easeActionWithAction();
+    }
+
+    /**
+     * horizontal orientation Type where the Left is nearer
+     * @constant
+     * @type Number
+     */
+    var TRANSITION_ORIENTATION_LEFT_OVER: number;
+    /**
+     * horizontal orientation type where the Right is nearer
+     * @constant
+     * @type Number
+     */
+    var TRANSITION_ORIENTATION_RIGHT_OVER: number;
+    /**
+     * vertical orientation type where the Up is nearer
+     * @constant
+     * @type Number
+     */
+    var TRANSITION_ORIENTATION_UP_OVER: number;
+    /**
+     * vertical orientation type where the Bottom is nearer
+     * @constant
+     * @type Number
+     */
+    var TRANSITION_ORIENTATION_DOWN_OVER: number;
+
+    /**
+     * @class
+     * @extends cc.Scene
+     */
+    export class TransitionScene extends Scene {
+        /**
+         * custom onEnter
+         */
+        onEnter();
+
+        /**
+         * custom onExit
+         */
+        onExit();
+
+        /**
+         * custom cleanup
+         */
+        cleanup();
+
+        /**
+         * initializes a transition with duration and incoming scene
+         * @param {Number} t time in seconds
+         * @param {cc.Scene} scene a scene to transit to
+         * @return {Boolean} return false if error
+         */
+        initWithDuration(t: number, scene: Scene): boolean;
+
+        /**
+         * called after the transition finishes
+         */
+        finish();
+
+        /**
+         * set hide the out scene and show in scene
+         */
+        hideOutShowIn();
+    }
+    //#region cocos2d/layers_scenes_transitions_nodes/Transition.js
+
+    //#region cocos2d/layers_scenes_transitions_nodes/TransitionProgress.js
+    /**
+     * tag for scene redial
+     * @constant
+     * @type Number
+     */
+    var SCENE_RADIAL: number;
+
+    /**
+     * cc.TransitionProgress transition.
+     * @class
+     * @extends cc.TransitionScene
+     */
+    export class TransitionProgress extends TransitionScene {
+        /**
+         * @override
+         */
+        onEnter();
+
+        /**
+         * @override
+         */
+        onExit();
+
+        /**
+         * create a cc.TransitionProgress object
+         * @function
+         * @param {Number} t time
+         * @param {cc.Scene} scene
+         * @return {cc.TransitionProgress}
+         */
+        static create(t?: number, scene?: Scene): TransitionProgress;
+    }
+
+    /**
+     *  cc.TransitionRadialCCW transition.<br/>
+     *  A counter colock-wise radial transition to the next scene
+     * @class
+     * @extends cc.TransitionProgress
+     */
+    export class TransitionProgressRadialCCW extends TransitionProgress {
+        /**
+         * create a cc.TransitionProgressRadialCCW object
+         * @function
+         * @param {Number} t time
+         * @param {cc.Scene} scene
+         * @return {cc.TransitionProgressRadialCCW}
+         */
+        static create(t?: number, scene?: Scene): TransitionProgressRadialCCW;
+    }
+
+    /**
+     * cc.TransitionRadialCW transition.<br/>
+     * A counter colock-wise radial transition to the next scene
+     * @class
+     * @extends cc.TransitionProgress
+     */
+    export class TransitionProgressRadialCW extends TransitionProgress {
+        /**
+         * create a cc.TransitionProgressRadialCW object
+         * @function
+         * @param {Number} t time
+         * @param {cc.Scene} scene
+         * @return {cc.TransitionProgressRadialCW}
+         */
+        static create(t?: number, scene?: Scene): TransitionProgressRadialCW;
+    }
+
+    /**
+     * cc.TransitionProgressHorizontal transition.<br/>
+     * A  colock-wise radial transition to the next scene
+     * @class
+     * @extends cc.TransitionProgress
+     */
+    export class TransitionProgressHorizontal extends TransitionProgress {
+        /**
+         * create a cc.TransitionProgressHorizontal object
+         * @function
+         * @param {Number} t time
+         * @param {cc.Scene} scene
+         * @return {cc.TransitionProgressHorizontal}
+         */
+        create(t: number, scene: Scene): TransitionProgressHorizontal;
+    }
+
+    /**
+     * cc.TransitionProgressVertical transition.
+     * @class
+     * @extends cc.TransitionProgress
+     */
+    export class TransitionProgressVertical extends TransitionProgress {
+        /**
+         * create a cc.TransitionProgressVertical object
+         * @function
+         * @param {Number} t time
+         * @param {cc.Scene} scene
+         * @return {cc.TransitionProgressVertical}
+         */
+        create(t: number, scene: Scene): TransitionProgressVertical;
+    }
+
+    /**
+     * cc.TransitionProgressInOut transition.
+     * @class
+     * @extends cc.TransitionProgress
+     */
+    export class TransitionProgressInOut extends TransitionProgress {
+        /**
+         * create a cc.TransitionProgressInOut object
+         * @function
+         * @param {Number} t time
+         * @param {cc.Scene} scene
+         * @return {cc.TransitionProgressInOut}
+         */
+        create(t: number, scene: Scene): TransitionProgressInOut;
+    }
+
+    /**
+     * cc.TransitionProgressOutIn transition.
+     * @class
+     * @extends cc.TransitionProgress
+     */
+    export class TransitionProgressOutIn extends TransitionProgress {
+        /**
+         * create a cc.TransitionProgressOutIn object
+         * @function
+         * @param {Number} t time
+         * @param {cc.Scene} scene
+         * @return {cc.TransitionProgressOutIn}
+         */
+        create(t: number, scene: Scene): TransitionProgressOutIn;
+    }
+    //#endregion cocos2d/layers_scenes_transitions_nodes/TransitionProgress.js
 
     //#region cocos2d/menu_nodes/CCMenu.js
     /**
@@ -2354,6 +2840,13 @@ declare module cc {
      * @extends cc.MenuItem
      */
     export class MenuItemLabel extends MenuItem {
+        /**
+         * @param {cc.Node} label
+         * @param {function|String|Null} selector
+         * @param {cc.Node|Null} target
+         * @return {cc.MenuItemLabel}
+         */
+        static create(...args: any[]/*label, selector, target*/): MenuItemLabel;
     }
 
     /**
@@ -2362,6 +2855,24 @@ declare module cc {
      * @extends cc.MenuItemLabel
      */
     export class MenuItemAtlasFont extends cc.MenuItemLabel {
+        /**
+         * create menu item from string with font
+         * @param {String} value the text to display
+         * @param {String} charMapFile the character map file
+         * @param {Number} itemWidth
+         * @param {Number} itemHeight
+         * @param {String} startCharMap a single character
+         * @param {cc.Node|Null} target
+         * @param {function|String|Null} selector
+         * @return {cc.MenuItemAtlasFont}
+         * @example
+         * // Example
+         * var item = cc.MenuItemAtlasFont.create('text to display', 'font.fnt', 12, 32, ' ')
+         *
+         * //OR
+         * var item = cc.MenuItemAtlasFont.create('text to display', 'font.fnt', 12, 32, ' ', game, game.run)
+         */
+        static create(... args: any[]/*value, charMapFile, itemWidth, itemHeight, startCharMap, target, selector*/): MenuItemAtlasFont;
     }
 
     /**
@@ -2370,6 +2881,47 @@ declare module cc {
      * @extends cc.MenuItemLabel
      */
     export class MenuItemFont extends MenuItemLabel {
+        /**
+         * @param {Number} s
+         */
+        setFontSize(s: number);
+
+        /**
+         *
+         * @return {Number}
+         */
+        fontSize(): number;
+
+        /**
+         * @param {String} name
+         */
+        setFontName(name: string);
+
+        /**
+         * @return {String}
+         */
+        fontName(): string;
+
+        /**
+         * create a menu item from string
+         * @param {String} value the text to display
+         * @param {String|function|Null} selector the callback to run, either in function name or pass in the actual function
+         * @param {cc.Node|Null} target the target to run callback
+         * @return {cc.MenuItemFont}
+         * @example
+         * // Example
+         * var item = cc.MenuItemFont.create("Game start", 'start', Game)
+         * //creates a menu item from string "Game start", and when clicked, it will run Game.start()
+         *
+         * var item = cc.MenuItemFont.create("Game start", game.start, Game)//same as above
+         *
+         * var item = cc.MenuItemFont.create("i do nothing")//create a text menu item that does nothing
+         *
+         * //you can set font size and name before or after
+         * cc.MenuItemFont.setFontName('my Fancy Font');
+         * cc.MenuItemFont.setFontSize(62);
+         */
+        static create(...args: any[]/*value, selector, target*/): MenuItemFont;
     }
 
     /**
@@ -2382,6 +2934,28 @@ declare module cc {
      * @extends cc.MenuItem
      */
     export class MenuItemSprite extends MenuItem {
+        /**
+         * create a menu item from sprite
+         * @param {Image} normal normal state image
+         * @param {Image|Null} selected selected state image
+         * @param {Image|cc.Node|Null} three disabled state image OR target node
+         * @param {String|function|cc.Node|Null} four callback function name in string or actual function, OR target Node
+         * @param {String|function|Null} five callback function name in string or actual function
+         * @return {cc.MenuItemSprite}
+         * @example
+         * // Example
+         * var item = cc.MenuItemSprite.create(normalImage)//create a menu item from a sprite with no functionality
+         *
+         * var item = cc.MenuItemSprite.create(normalImage, selectedImage)//create a menu Item, nothing will happen when clicked
+         *
+         * var item = cc.MenuItemSprite.create(normalImage, SelectedImage, disabledImage)//same above, but with disabled state image
+         *
+         * var item = cc.MenuItemSprite.create(normalImage, SelectedImage, 'callback', targetNode)//create a menu item, when clicked runs targetNode.callback()
+         *
+         * var item = cc.MenuItemSprite.create(normalImage, SelectedImage, disabledImage, targetNode.callback, targetNode)
+         * //same as above, but with disabled image, and passing in callback function
+         */
+        static create(...args: any[]/*normalSprite, selectedSprite, three, four, five*/): MenuItemSprite;
     }
 
     /**
@@ -2413,9 +2987,9 @@ declare module cc {
          * var item = cc.MenuItemImage.create('normal.png', 'selected.png', 'disabled.png', gameScene.run, gameScene)
          */
         static create(): MenuItemImage;
-        static create(normalImage: string, selectedImage: string, three: () => void ): MenuItemImage;
-        static create(normalImage: string, selectedImage: string, three: () => void , four: Node): MenuItemImage;
-        static create(normalImage: string, selectedImage: string, three: string, four: () => void , five: Node): MenuItemImage;
+        static create(normalImage: string, selectedImage: string, three: (sender: any) => void ): MenuItemImage;
+        static create(normalImage: string, selectedImage: string, three: (sender: any) => void , four: Node): MenuItemImage;
+        static create(normalImage: string, selectedImage: string, three: string, four: (sender: any) => void , five: Node): MenuItemImage;
     }
 
     /**
@@ -2425,6 +2999,109 @@ declare module cc {
      * @extends cc.MenuItem
      */
     export class MenuItemToggle extends MenuItem {
+        /**
+         * @return {Number}
+         */
+        getOpacity(): number;
+
+        /**
+         * @param {Number} Opacity
+         */
+        setOpacity(Opacity: number);
+
+        /**
+         * @return {cc.Color3B}
+         */
+        getColor(): Color3B;
+
+        /**
+         * @param {cc.Color3B} Color
+         */
+        setColor(Color: Color3B);
+
+        /**
+         * @return {Number}
+         */
+        getSelectedIndex(): number;
+
+        /**
+         * @param {Number} SelectedIndex
+         */
+        setSelectedIndex(SelectedIndex: number);
+
+        /**
+         * similar to get children
+         * @return {cc.MenuItem}
+         */
+        getSubItems(): MenuItem[];
+
+        /**
+         * @param {cc.MenuItem} SubItems
+         */
+        setSubItems(SubItems: MenuItem[]);
+
+        /**
+         * @param {cc.MenuItem} args[0...last-2] the rest in the array are cc.MenuItems
+         * @param {function|String} args[last-1] the second item in the args array is the callback
+         * @param {cc.Node} args[last] the first item in the args array is a target
+         * @return {Boolean}
+         */
+        initWithItems(... args: any[]): boolean;
+
+        /**
+         * @param {cc.MenuItem} item
+         */
+        addSubItem(item: MenuItem);
+
+        /**
+         * activate the menu item
+         */
+        activate();
+
+        /**
+         * menu item is selected (runs callback)
+         */
+        selected();
+
+        /**
+         * menu item goes back to unselected state
+         */
+        unselected();
+
+        /**
+         * @param {Boolean} enabled
+         */
+        setEnabled(enabled: boolean);
+
+        /**
+         * returns the selected item
+         * @return {cc.MenuItem}
+         */
+        selectedItem(): MenuItem;
+
+        setOpacityModifyRGB(value: boolean);
+
+        isOpacityModifyRGB(): boolean;
+
+        onEnter();
+
+        /**
+         * create a simple container class that "toggles" it's inner items<br/>
+         * The inner items can be any MenuItem
+         * @return {cc.MenuItemToggle}
+         * @example
+         * // Example
+         *
+         * //create a toggle item with 2 menu items (which you can then toggle between them later)
+         * var toggler = cc.MenuItemToggle.create(this, this.callback, cc.MenuItemFont.create("On"), cc.MenuItemFont.create("Off"))
+         * //Note: the first param is the target, the second is the callback function, afterwards, you can pass in any number of menuitems
+         *
+         * //if you pass only 1 variable, then it must be a cc.MenuItem
+         * var notYetToggler = cc.MenuItemToggle.create(cc.MenuItemFont.create("On"));//it is useless right now, until you add more stuff to it
+         * notYetToggler.addSubItem(cc.MenuItemFont.create("Off"));
+         * //this is useful for constructing a toggler without a callback function (you wish to control the behavior from somewhere else)
+         */
+        static create(... args: any[]): MenuItemToggle;
     }
     //#endregion cocos2d/menu_nodes/CCMenuItem.js
 
@@ -2840,6 +3517,17 @@ declare module cc {
     }
 
     /**
+     * helper macro that creates an ccColor4B type
+     * @function
+     * @param {Number} r red value (0 to 255)
+     * @param {Number} g green value (0 to 255)
+     * @param {Number} b blue value (0 to 255)
+     * @param {Number} a Alpha value (0 to 255)
+     * @return {Number,Number,Number,Number}
+     */
+    function c4b(r: number, g: number, b: number, a: number): Color4B;
+
+    /**
      * RGBA color composed of 4 floats
      * @Class
      * @Construct
@@ -2858,6 +3546,175 @@ declare module cc {
         a: number;
 
         constructor(r1: number, g1: number, b1: number, a1: number);
+    }
+
+    /**
+     * helper macro that creates an ccColor4F type
+     * @Class
+     * @Construct
+     * @param {Number} r red value (0 to 1)
+     * @param {Number} g green value (0 to 1)
+     * @param {Number} b blue value (0 to 1)
+     * @param {Number} a Alpha value (0 to 1)
+     * @example
+     * //create a red color
+     * var redColor = cc.c4f(1,0,0,1);
+     */
+    function c4f(r: number, g: number, b: number, a: number): Color4F;
+
+    /**
+     * Returns a cc.Color4F from a cc.Color3B. Alpha will be 1.
+     * @function
+     * @param {cc.Color3B} c color
+     * @return {cc.Color4F}
+     */
+    function c4FFromccc3B(c: Color3B): Color4F;
+
+    /**
+     * Returns a cc.Color4F from a cc.Color4B.
+     * @function
+     * @param {cc.Color4B} c Color
+     * @return {cc.Color4F}
+     */
+    function c4FFromccc4B(c: Color4B): Color4F;
+
+    /**
+     * Returns a cc.Color4B from a cc.Color4F.
+     * @param {cc.Color4F} c
+     * @return {cc.Color4B}
+     */
+    function c4BFromccc4F(c: Color4F): Color4B;
+
+    /**
+     * returns YES if both cc.Color4F are equal. Otherwise it returns NO.
+     * @param {cc.Color4F} a color1
+     * @param {cc.Color4F} b color2
+     * @return {Boolean}
+     */
+    function c4FEqual(a: Color4F, b: Color4F): boolean;
+
+    /**
+     * A vertex composed of 2 floats: x, y
+     * @Class
+     * @Construct
+     * @param {Number} x1
+     * @param {Number} y1
+     */
+    export class Vertex2F {
+        x: number;
+        y: number;
+
+        constructor(x1?: number, y1?: number);
+    }
+
+    /**
+     * helper macro that creates an Vertex2F type
+     * @function
+     * @param {Number} x
+     * @param {Number} y
+     * @return {cc.Vertex2F}
+     */
+    function Vertex2(x: number, y: number): Vertex2F;
+
+    /**
+     * A vertex composed of 3 floats: x, y, z
+     * @Class
+     * @Construct
+     * @param {Number} x1
+     * @param {Number} y1
+     * @param {Number} z1
+     */
+    export class Vertex3F {
+        x: number;
+        y: number;
+        z: number;
+
+        constructor(x1?: number, y1?: number, z1?: number);
+    }
+
+    /**
+     * helper macro that creates an Vertex3F type
+     * @function
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
+     * @return {cc.Vertex3F}
+     */
+    function vertex3(x: number, y: number, z: number);
+
+    /**
+     * A texcoord composed of 2 floats: u, y
+     * @Class
+     * @Construct
+     * @param {Number} u1
+     * @param {Number} v1
+     */
+    export class Tex2F {
+        u: number;
+        v: number;
+
+        constructor(u1?: number, v1?: number);
+    }
+
+    /**
+     * helper macro that creates an Tex2F type
+     * @function
+     * @param {Number} u
+     * @param {Number} v
+     * @return {cc.Tex2F}
+     */
+    function tex2(u: number, v: number);
+
+    /**
+     * Point Sprite component
+     * @Class
+     * @Construct
+     * @param {cc.Vertex2F} pos1
+     * @param {cc.Color4B} color1
+     * @param {Number} size1
+     */
+    export class PointSprite {
+        pos: Vertex2F;
+        color: Color4B;
+        size: number;
+
+        constructor(pos1: Vertex2F, color1: Color4B, size1: number);
+    }
+
+    /**
+     * A 2D Quad. 4 * 2 floats
+     * @Class
+     * @Construct
+     * @param {cc.Vertex2F} tl1
+     * @param {cc.Vertex2F} tr1
+     * @param {cc.Vertex2F} bl1
+     * @param {cc.Vertex2F} br1
+     */
+    export class Quad2 {
+        tl: Vertex2F;
+        tr: Vertex2F;
+        bl: Vertex2F;
+        br: Vertex2F;
+
+        constructor(tl1?: Vertex2F, tr1?: Vertex2F, bl1?: Vertex2F, br1?: Vertex2F);
+    }
+
+    /**
+     * A 3D Quad. 4 * 3 floats
+     * @Class
+     * @Construct
+     * @param {cc.Vertex3F} bl1
+     * @param {cc.Vertex3F} br1
+     * @param {cc.Vertex3F} tl1
+     * @param {cc.Vertex3F} tr1
+     */
+    export class Quad3 {
+        bl: Vertex3F;
+        br: Vertex3F;
+        tl: Vertex3F;
+        tr: Vertex3F;
+
+        constructor(bl1?: Vertex3F, br1?: Vertex3F, tl1?: Vertex3F, tr1?: Vertex3F);
     }
 
     /**
@@ -3217,5 +4074,19 @@ declare module cc {
         isFormatSupported(ext: string): boolean;
     }
     //#endregion CocosDension/SimpleAudioEngine.js
+}
+
+/** N/A in cocos2d-html5 */
+declare module sys {
+    var platform: string;
+    var capabilities: any;
+
+    function garbageCollect();
+
+    // Dumps rooted objects
+    function dumpRoot();
+
+    // restarts the JS VM
+    function restartVM();
 }
 
